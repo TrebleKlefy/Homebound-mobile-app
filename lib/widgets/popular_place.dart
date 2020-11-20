@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:homebound/constants/strings.dart';
 import 'package:homebound/helpers/colors.dart';
-import 'package:homebound/models/rooms.dart';
+import 'package:homebound/models/advertisment.dart';
+
 import 'package:homebound/views/advert_details.dart';
 
-
 class PopularPlaceCard extends StatelessWidget {
-  final Room room;
-  PopularPlaceCard({this.room});
+  final Advertisment advertisement;
+  final List<Imagery> image;
+  PopularPlaceCard({this.advertisement, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +20,15 @@ class PopularPlaceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: GestureDetector(
-           onTap: () {
-                //navigate to user details page
+        onTap: () {
+          //navigate to user details page
           Navigator.push(
-          context,
-          new MaterialPageRoute(
-          builder: (context) => DetailOfHouse(room),
+              context,
+              new MaterialPageRoute(
+                builder: (context) => DetailOfHouse(advertisement,image),
               ));
-              },
-              child: Row(
+        },
+        child: Row(
           children: <Widget>[
             Container(
               width: 90.0,
@@ -41,9 +43,8 @@ class PopularPlaceCard extends StatelessWidget {
                     bottom: 12.0,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
-                      child: Image.asset(
-                        room.image,
-                     
+                      child: Image.network(
+                        Strings.imageurl + advertisement.photoName,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -57,7 +58,6 @@ class PopularPlaceCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       color: kBlueColor,
-
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 8.0,
@@ -65,13 +65,13 @@ class PopularPlaceCard extends StatelessWidget {
                         ),
                         child: Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.star,
-                              size: 10.0,
-                              color: kBackgroundLightColor,
-                            ),
+                            // Icon(
+                            //   Icons.money_sharp,
+                            //   size: 10.0,
+                            //   color: kBackgroundLightColor,
+                            // ),
                             SizedBox(width: 3.0),
-                            Text(room.rating,
+                            Text('\$ '+ advertisement.price,
                                 style: theme.textTheme.headline5
                                     .copyWith(color: kPrimaryDarkColor))
                           ],
@@ -89,24 +89,60 @@ class PopularPlaceCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(room.name,
+                    Text(advertisement.name,
                         style: theme.textTheme.headline3, maxLines: 1),
-                    Text(room.place, style: theme.textTheme.subtitle2),
-                    Row(
+                    Text(advertisement.street,
+                        style: theme.textTheme.subtitle2),
+                    Container(
+                    margin: EdgeInsets.only( right: 65),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("${room.width}ft | ${room.height}ft",
-                            maxLines: 1, style: theme.textTheme.subtitle1),
-                        Spacer(),
-                        Text(
-                          "\$ ${room.price}.00",
-                          style: theme.textTheme.headline3.copyWith(color: kBlueColor),
-                        )
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.people,
+                              size: 12,
+                              color: Colors.grey[600],
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              advertisement.contract,
+                              style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.local_offer,
+                              size: 12,
+                              color: Colors.grey[600],
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              advertisement.rooms.toString() + " Bed Rooms",
+                              style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                       
                       ],
                     ),
+                  ),
                   ],
                 ),
               ),
             ),
+             
           ],
         ),
       ),

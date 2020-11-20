@@ -9,6 +9,7 @@ class Room {
   final String rating;
   final String image;
   final String owner;
+  final List<String> images;
   Room(
       {this.bath,
       this.height,
@@ -19,6 +20,7 @@ class Room {
       this.width,
       this.rating,
       this.image,
+      this.images,
       this.owner});
 }
 
@@ -33,6 +35,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/1_h123kc.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner1.jpg",
   ),
   Room(
@@ -45,6 +48,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/213503505.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner2.jpg",
   ),
   Room(
@@ -57,6 +61,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/f7771c6afc7cc32401286116a7eed6f0.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner1.jpg",
   ),
   Room(
@@ -69,6 +74,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/family1920x960.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner2.jpg",
   ),
   Room(
@@ -81,6 +87,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/GettyImages-9261821821-5c69c1b7c9e77c0001675a49.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner1.jpg",
   ),
   Room(
@@ -93,6 +100,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/hotel-room-blocks.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner2.jpg",
   ),
   Room(
@@ -105,6 +113,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/living-room-blue-and-white-brown-modern_living-room-layout-and-decor.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner1.jpg",
   ),
   Room(
@@ -129,6 +138,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/photo-1554995207-c18c203602cb.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner1.jpg",
   ),
   Room(
@@ -141,6 +151,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/photo-1567767292278-a4f21aa2d36e.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner2.jpg",
   ),
   Room(
@@ -153,6 +164,7 @@ List<Room> roomList = [
     type: "Family",
     rating: "4.5",
     image: "assets/SB-ATL-ZookHome-9-e1538165814448.jpg",
+    images: ["assets/1_h123kc.jpg","assets/213503505.jpg","assets/f7771c6afc7cc32401286116a7eed6f0.jpg","assets/family1920x960.jpg",],
     owner: "assets/owner1.jpg",
   ),
 ];

@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter/material.dart';
 // Color Component
 var kPrimaryColor = Color(0xFFCBA76B);
 var kAccentLightColor = Color(0xFF323345);
@@ -27,3 +27,13 @@ const kPrimaryDarkColor = Color(0xFFD9D9D9);
 // Font Secondary
 const kSecondaryLightColor = Color(0xFF657786);
 const kSecondaryDarkColor = Color(0xFF6E767D);
+
+
+
+
+const primary = Color(0xFFF391A0);
+const grey = Color(0xFFe9eaec);
+const white = Color(0xFFFFFFFF);
+const black = Color(0xFF000000);
+const online = Color(0xFF66BB6A);
+const blue_story = Colors.blueAccent;

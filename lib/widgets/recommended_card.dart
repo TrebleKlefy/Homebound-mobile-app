@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homebound/helpers/colors.dart';
 import 'package:homebound/models/rooms.dart';
-import 'package:homebound/views/advert_details.dart';
 
 
 class RecommendedCard extends StatelessWidget {
@@ -17,14 +16,14 @@ class RecommendedCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(25.0),
       ),
       child: GestureDetector(
-        onTap: () {
-                //navigate to user details page
-          Navigator.push(
-          context,
-          new MaterialPageRoute(
-          builder: (context) => DetailOfHouse(room),
-              ));
-              },
+        // onTap: () {
+        //         //navigate to user details page
+        //   Navigator.push(
+        //   context,
+        //   new MaterialPageRoute(
+        //   builder: (context) => DetailOfHouse(room),
+        //       ));
+        //       },
               child: Column(
           children: <Widget>[
             ClipRRect(
