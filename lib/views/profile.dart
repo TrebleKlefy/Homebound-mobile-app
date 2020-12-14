@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:homebound/constants/strings.dart';
 import 'package:homebound/models/userdata.dart';
 import 'package:homebound/navigation_bar/primary_nav.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
@@ -12,20 +14,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProfileFirst(),
+      home: UserProfile(),
     );
   }
 }
 
-class ProfileFirst extends StatefulWidget {
+class UserProfile extends StatefulWidget {
   @override
-  _ProfileFirstState createState() => _ProfileFirstState();
+  _UserProfileState createState() => _UserProfileState();
 }
 
-class _ProfileFirstState extends State<ProfileFirst> {
-  // SharedPreferences user =  getSharedPreferences();
-
-   var userData;
+class _UserProfileState extends State<UserProfile> {
+  var userData;
+  var count;
 
   @override
   void initState() {
@@ -34,44 +35,36 @@ class _ProfileFirstState extends State<ProfileFirst> {
         userData = user;
       });
     });
+    Userdata().getAddCount().then((count) {
+      setState(() {
+        count = count;
+      });
+    });
     super.initState();
   }
 
-  // final String _fullName = "Nick Frost";
-  final String _status = "Software Developer";
-  final String _bio =
-      "\"Hi, I am a Freelance developer working for hourly basis. If you wants to contact me to build your product leave a message.\"";
-  final String _followers = "173";
+  final String _followers = "1";
   var _posts = "24";
-  final String _scores = "450";
+  var _scores = "450";
   String path;
 
   Widget _buildCoverImage(Size screenSize) {
-    // print(Strings.imageurl + userData['profile_photo']);
     return Container(
       height: screenSize.height / 2.6,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          // Where the linear gradient begins and ends
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          // Add one stop for each color. Stops should increase from 0 to 1
           stops: [1.0, 0.5],
           colors: [
-            // Colors are easy thanks to Flutter's Colors class.
             Color.fromRGBO(23, 43, 77, 1.0),
-           Color.fromRGBO(26, 23, 77, 1.7),
-            // Colors.indigo[600],
-            // Colors.indigo[400],
+            Color.fromRGBO(26, 23, 77, 1.7),
           ],
         ),
         image: DecorationImage(
-          
-           colorFilter: 
-      ColorFilter.mode(Color.fromRGBO(26, 23, 77, 0.1), 
-      BlendMode.dstATop),
-      
-          image: AssetImage('assets/owner1.jpg'),
+          colorFilter: ColorFilter.mode(
+              Color.fromRGBO(26, 23, 77, 0.1), BlendMode.dstATop),
+          image: AssetImage('assets/travelthree.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -79,11 +72,13 @@ class _ProfileFirstState extends State<ProfileFirst> {
   }
 
   Widget _buildProfileImage() {
-    userData != null ? path = '${userData['profile_photo']}' : path ='/uploads/images/android-user-icon-4.png';
+    userData != null
+        ? path = '${userData['profile_photo']}'
+        : path = '/uploads/images/clipart.png';
     print(path);
     return Center(
       child: Padding(
-        padding: EdgeInsets.only(top: 70.0),
+        padding: EdgeInsets.only(top: 70.0, bottom: 10),
         child: Container(
           width: 140.0,
           height: 140.0,
@@ -106,7 +101,6 @@ class _ProfileFirstState extends State<ProfileFirst> {
   Widget _buildFullName() {
     TextStyle _nameTextStyle = TextStyle(
       fontFamily: 'Roboto',
-      // color: Colors.black,
       fontSize: 28.0,
       fontWeight: FontWeight.w700,
     );
@@ -127,10 +121,9 @@ class _ProfileFirstState extends State<ProfileFirst> {
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Text(
-        _status,
+        '',
         style: TextStyle(
           fontFamily: 'Spectral',
-          // color: Colors.black,
           fontSize: 20.0,
           fontWeight: FontWeight.w300,
         ),
@@ -141,13 +134,11 @@ class _ProfileFirstState extends State<ProfileFirst> {
   Widget _buildStatItem(String label, String count) {
     TextStyle _statLabelTextStyle = TextStyle(
       fontFamily: 'Roboto',
-      // color: Colors.black,
       fontSize: 16.0,
       fontWeight: FontWeight.w200,
     );
 
     TextStyle _statCountTextStyle = TextStyle(
-      // color: Colors.black54,
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
     );
@@ -173,6 +164,12 @@ class _ProfileFirstState extends State<ProfileFirst> {
             ? _posts = userData['unread_notifications'].length.toString()
             : _posts = '0'
         : _posts = '0';
+
+    count != null
+        ? count != null
+            ? _scores = count.length.toString()
+            : _scores = '0'
+        : _scores = '0';
     return Container(
       height: 60.0,
       margin: EdgeInsets.only(top: 12.0),
@@ -193,9 +190,8 @@ class _ProfileFirstState extends State<ProfileFirst> {
   Widget _buildBio(BuildContext context) {
     TextStyle bioTextStyle = TextStyle(
       fontFamily: 'Spectral',
-      fontWeight: FontWeight.w400, //try changing weight to w500 if not thin
+      fontWeight: FontWeight.w400,
       fontStyle: FontStyle.italic,
-      // color: Color(0xFF799497),
       fontSize: 16.0,
     );
 
@@ -203,7 +199,9 @@ class _ProfileFirstState extends State<ProfileFirst> {
       color: Theme.of(context).scaffoldBackgroundColor,
       padding: EdgeInsets.all(8.0),
       child: Text(
-        _bio,
+        userData != null
+            ? '${userData['aboutuser']}'
+            : 'No data as yet,please add',
         textAlign: TextAlign.center,
         style: bioTextStyle,
       ),
@@ -222,10 +220,10 @@ class _ProfileFirstState extends State<ProfileFirst> {
   Widget _buildGetInTouch(BuildContext context) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.only(top: 8.0),
+      padding: EdgeInsets.only(top: 10.0),
       child: GestureDetector(
         child: Text(
-          "Need to contact us? Send a message,",
+          "Thanks for making it HomeBound,",
           style: TextStyle(fontFamily: 'Roboto', fontSize: 16.0),
         ),
       ),
@@ -239,9 +237,9 @@ class _ProfileFirstState extends State<ProfileFirst> {
         children: <Widget>[
           Expanded(
             child: InkWell(
-             onTap: () {
-            logout();
-            },
+              onTap: () {
+                logout();
+              },
               child: Container(
                 height: 40.0,
                 decoration: BoxDecoration(
@@ -261,46 +259,6 @@ class _ProfileFirstState extends State<ProfileFirst> {
             ),
           ),
           SizedBox(width: 10.0),
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (_) => NetworkGiffyDialog(
-                          image: Image.network(
-                              "https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif"),
-                          title: Text('Granny Eating Chocolate',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 22.0, fontWeight: FontWeight.w600)),
-                          description: Text(
-                            'This is a granny eating chocolate dialog box. This library helps you easily create fancy giffy dialog',
-                            textAlign: TextAlign.center,
-                          ),
-                          entryAnimation: EntryAnimation.BOTTOM_RIGHT,
-                          onOkButtonPressed: () {},
-                        ));
-              },
-              child: Container(
-                height: 40.0,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey[600],
-                  ),
-                  // color: Colors.white,
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "MESSAGE",
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -345,6 +303,18 @@ class _ProfileFirstState extends State<ProfileFirst> {
         context, new MaterialPageRoute(builder: (context) => PrimayNav()));
   }
 
-  
-  
+  getcount(user) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var client = http.Client();
+    var response;
+    try {
+      response = await client.get(Strings.count + user);
+      if (response.statusCode == 200) {
+        var jsonString = response.body.toString();
+        var jsonMap = json.decode(jsonString);
+        sharedPreferences.setString("review", jsonMap['review']);
+        sharedPreferences.setString("addcount", jsonMap['addscount']);
+      }
+    } catch (Exception) {}
+  }
 }

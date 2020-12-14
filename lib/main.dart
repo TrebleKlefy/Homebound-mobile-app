@@ -10,7 +10,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
     return MultiProvider( 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: themeData(context),
             darkTheme: darkThemeData(context),
-            themeMode: theme.isLightTheme ?  ThemeMode.light:ThemeMode.dark ,
+            themeMode: theme.isLightTheme ?  ThemeMode.dark:ThemeMode.light ,
             home: PrimayNav(),
           );
                   

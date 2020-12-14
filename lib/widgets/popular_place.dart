@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:homebound/constants/strings.dart';
 import 'package:homebound/helpers/colors.dart';
 import 'package:homebound/models/advertisment.dart';
-
 import 'package:homebound/views/advert_details.dart';
 
 class PopularPlaceCard extends StatelessWidget {
@@ -21,11 +20,10 @@ class PopularPlaceCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          //navigate to user details page
           Navigator.push(
               context,
               new MaterialPageRoute(
-                builder: (context) => DetailOfHouse(advertisement,image),
+                builder: (context) => DetailOfHouse(advertisement, image),
               ));
         },
         child: Row(
@@ -65,13 +63,8 @@ class PopularPlaceCard extends StatelessWidget {
                         ),
                         child: Row(
                           children: <Widget>[
-                            // Icon(
-                            //   Icons.money_sharp,
-                            //   size: 10.0,
-                            //   color: kBackgroundLightColor,
-                            // ),
                             SizedBox(width: 3.0),
-                            Text('\$ '+ advertisement.price,
+                            Text('\$ ' + advertisement.price,
                                 style: theme.textTheme.headline5
                                     .copyWith(color: kPrimaryDarkColor))
                           ],
@@ -94,55 +87,53 @@ class PopularPlaceCard extends StatelessWidget {
                     Text(advertisement.street,
                         style: theme.textTheme.subtitle2),
                     Container(
-                    margin: EdgeInsets.only( right: 65),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.people,
-                              size: 12,
-                              color: Colors.grey[600],
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              advertisement.contract,
-                              style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.local_offer,
-                              size: 12,
-                              color: Colors.grey[600],
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              advertisement.rooms.toString() + " Bed Rooms",
-                              style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                       
-                      ],
+                      margin: EdgeInsets.only(right: 65),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.people,
+                                size: 12,
+                                color: Colors.grey[600],
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                advertisement.contract,
+                                style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.local_offer,
+                                size: 12,
+                                color: Colors.grey[600],
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                advertisement.rooms.toString() + " Bed Rooms",
+                                style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   ],
                 ),
               ),
             ),
-             
           ],
         ),
       ),

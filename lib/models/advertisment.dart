@@ -38,8 +38,8 @@ class AvertisementModel {
 class Advertisment {
   Advertisment({
     this.id,
-    // this.createdAt,
-    // this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     this.rooms,
     this.bathRooms,
     this.kitchenRooms,
@@ -64,8 +64,8 @@ class Advertisment {
   });
 
   int id;
-  // DateTime createdAt;
-  // DateTime updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
   int rooms;
   int bathRooms;
   int kitchenRooms;
@@ -90,8 +90,8 @@ class Advertisment {
 
   factory Advertisment.fromJson(Map<String, dynamic> json) => Advertisment(
         id: json["id"],
-        // createdAt: DateTime.parse(json["created_at"]),
-        // updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
         rooms: json["rooms"],
         bathRooms: json["bath_rooms"],
         kitchenRooms: json["kitchen_rooms"],
@@ -117,8 +117,8 @@ class Advertisment {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        // "created_at": createdAt.toIso8601String(),
-        // "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
         "rooms": rooms,
         "bath_rooms": bathRooms,
         "kitchen_rooms": kitchenRooms,
@@ -156,8 +156,8 @@ class User {
     this.trn,
     this.notificationPreference,
     this.approved,
-    // this.createdAt,
-    // this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   int id;
@@ -171,8 +171,8 @@ class User {
   String trn;
   String notificationPreference;
   int approved;
-  // DateTime createdAt;
-  // DateTime updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -186,8 +186,8 @@ class User {
         trn: json["trn"],
         notificationPreference: json["notification_preference"],
         approved: json["approved"],
-        // createdAt: DateTime.parse(json["created_at"]),
-        // updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {

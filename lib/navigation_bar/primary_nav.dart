@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:homebound/helpers/sizeConfig.dart';
 import 'package:homebound/login/login.dart';
-import 'package:homebound/navigation_bar/loggedIn.dart';
+import 'package:homebound/navigation_bar/secondary_nav.dart';
 import 'package:homebound/views/homepage.dart';
-import 'package:homebound/views/profileTwo.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +28,7 @@ int _selectedIndex = 0;
 
   List<Widget> _widgetOptions = <Widget>[
   Home(),
-  ProfileSecond(),
+
   LogIn(),
 
   ];
@@ -44,7 +43,7 @@ int _selectedIndex = 0;
   checkLoginStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("token") != null) {
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoggedIn()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => SecondaryNav()), (Route<dynamic> route) => false);
     }
   }
 
@@ -61,7 +60,7 @@ int _selectedIndex = 0;
         ]),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 70.0, vertical: 8),
             child: GNav(
                 gap: 6,
                 activeColor: Colors.white,
@@ -77,14 +76,6 @@ int _selectedIndex = 0;
                       padding: padding,
                       icon: LineIcons.home,
                     text: 'Home',
-                  ),
-                  GButton(
-                      gap:gap,
-                      backgroundColor: Colors.blue.withOpacity(.2),
-                      iconSize: 24,
-                      padding: padding,
-                    icon: LineIcons.calendar,
-                    text: 'Trips',
                   ),
                   GButton(
                      gap:gap,

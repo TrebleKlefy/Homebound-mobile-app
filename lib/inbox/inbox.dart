@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:homebound/constants/strings.dart';
-import 'package:homebound/helpers/colors.dart';
 import 'package:homebound/inbox/view_inbox.dart';
+import 'package:homebound/models/notification.dart';
 import 'package:homebound/models/userdata.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:homebound/services/api_manager.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 
 class Inbox extends StatefulWidget {
@@ -12,6 +13,7 @@ class Inbox extends StatefulWidget {
 }
 
 class _InboxState extends State<Inbox> {
+  Future<NotificationModel> _notificationModel;
   var userData;
 
   @override
@@ -19,14 +21,15 @@ class _InboxState extends State<Inbox> {
     Userdata().getUserInfo().then((user) {
       setState(() {
         userData = user;
+        _notificationModel = APIManager().getNotifiaction(userData['id'].toString());
+        print(userData['id']);
       });
     });
     super.initState();
   }
 
-
   String path;
-  TextEditingController _searchController = new TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +40,7 @@ class _InboxState extends State<Inbox> {
   Widget getBody() {
     userData != null
         ? path = '${userData['profile_photo']}'
-        : path = '/uploads/images/android-user-icon-4.png';
+        : path = '/uploads/images/clipart.png';
     return SafeArea(
         child: ListView(
       padding: EdgeInsets.only(left: 20, right: 20, top: 15),
@@ -61,69 +64,57 @@ class _InboxState extends State<Inbox> {
             Icon(Icons.edit)
           ],
         ),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          width: double.infinity,
-          height: 40,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-          child: TextField(
-            cursorColor: black,
-            controller: _searchController,
-            decoration: InputDecoration(
-                prefixIcon: Icon(
-                  LineIcons.search,
-                  // color: black.withOpacity(0.5),
-                ),
-                hintText: "Search",
-                border: InputBorder.none),
-          ),
-        ),
+
         SizedBox(
           height: 30,
         ),
-        userData != null
-            ? Column(
-                children: List.generate(userData['unread_notifications'].length,
-                    (index) {
-                  var data =
-                      userData != null ? userData['unread_notifications'] : '';
-                  return Card(
+        Column(
+              children: <Widget>[
+            FutureBuilder<NotificationModel>(
+                future: _notificationModel,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                  return  Container(
+                      width: double.infinity,
+                      height: 580.0,
+                      child: ListView.builder(
+                      itemCount: snapshot.data.notification.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                        var notifi = snapshot.data.notification[index];
+                      
+                     return Card(
                     child: ListTile(
                         title: Text(
-                          data != null ? data[index]['data']['name'] : '',
+                         notifi.data.name,
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.w500),
                         ),
                         subtitle: Text(
-                            data != null ? data[index]['data']['body'] : '',
+                            notifi.data.greeting,
                             style: TextStyle(color: Colors.grey)),
-                        trailing: Text('j'),
+                        trailing: Text(timeago.format(DateTime.parse(notifi.createdAt.toString()))),
+                     
                         dense: true,
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => ChatDetailPage()));
+                                  builder: (_) => ChatDetailPage(note: notifi,id:userData['id'])));
                         }),
                   );
-                }),
-              )
-            : Column(
-                children: List.generate(1, (index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                        'No Notifications',
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w500),
+                        },
                       ),
-                      dense: true,
-                    ),
-                  );
+                    );
+                  }
+                   else {
+                    return Text(" ");
+                  }
+                  
                 }),
-              )
+              ]),
+                
+            
       ],
     ));
   }

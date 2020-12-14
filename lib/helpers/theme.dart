@@ -151,18 +151,6 @@ ThemeData darkThemeData(BuildContext context) {
         color: kSecondaryDarkColor,
         fontSize: 12.0,
       ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25.0),
-        borderSide: BorderSide(
-          color: kSecondaryDarkColor,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25.0),
-        borderSide: BorderSide(
-          color: kPrimaryColor,
-        ),
-      ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(25.0),
         borderSide: BorderSide(

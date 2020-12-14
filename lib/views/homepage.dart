@@ -2,7 +2,6 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:homebound/helpers/colors.dart';
 import 'package:homebound/models/advertisment.dart';
-import 'package:homebound/models/rooms.dart';
 import 'package:homebound/providers/theme.dart';
 import 'package:homebound/services/api_manager.dart';
 import 'package:homebound/widgets/popular_place.dart';
@@ -31,10 +30,10 @@ class _HomeState extends State<Home> {
         _avertisementModel = APIManager().getListing(string);
       });
     } else {
-      // string = value;
+  
       print(value);
       setState(() {
-        _avertisementModel = APIManager().getListing(string);
+        _avertisementModel = APIManager().getListing(value);
       });
     }
   }
@@ -96,59 +95,63 @@ class _HomeState extends State<Home> {
                     decoration: InputDecoration(
                         prefixIcon: Icon(
                           LineIcons.search,
-                          // color: black.withOpacity(0.5),
                         ),
                         hintText: "Search",
                         border: InputBorder.none),
                   ),
                 ),
-                // Row(
-                //   children: <Widget>[
-                //     SizedBox(width: 25.0),
-
-                //     SizedBox(height: 8.0),
-
-                //   ],
-                // )
+          
               ],
             ),
           ),
         ),
         body: SingleChildScrollView(
           child: Column(children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 340.0,
-              child: ListView.builder(
-                itemCount: roomList.length,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  var room = roomList[index];
-                  return RecommendedCard(room: room);
-                },
-              ),
-            ),
+            FutureBuilder<AvertisementModel>(
+                future: _avertisementModel,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                  return  Container(
+                      width: double.infinity,
+                      height: 340.0,
+                      child: ListView.builder(
+                     physics: BouncingScrollPhysics(),
+                      itemCount: snapshot.data.advertisments.length,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                       
+                        itemBuilder: (context, index) {
+                        var advert = snapshot.data.advertisments[index];
+                        var image = snapshot.data.images[index];
+                          return RecommendedCard( advertisement: advert, image: image);
+                        },
+                      ),
+                    );
+                  }
+                   else {
+                    return Text(" ", style: theme.textTheme.headline3);
+                  }
+                  
+                }),
             SizedBox(height: 15.0),
             ListTile(
               title: Text("Popular Place", style: theme.textTheme.headline3),
-              
             ),
             FutureBuilder<AvertisementModel>(
                 future: _avertisementModel,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    // this is two
+                 
                     return ListView.builder(
-                      // scrollDirection: Axis.horizontal,
+                
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemCount: snapshot.data.advertisments.length,
                       itemBuilder: (context, index) {
                         var advert = snapshot.data.advertisments[index];
                         var image = snapshot.data.images[index];
-                        return PopularPlaceCard(advertisement: advert, image:image);
+                        return PopularPlaceCard(
+                            advertisement: advert, image: image);
                       },
                     );
                   } else {
@@ -180,7 +183,7 @@ class _HomeState extends State<Home> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10.0,
-                                    color: Colors.black,
+                                
                                   ),
                                 ),
                               ),

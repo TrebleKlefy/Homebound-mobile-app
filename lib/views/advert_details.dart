@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
@@ -5,12 +7,18 @@ import 'package:homebound/constants/strings.dart';
 import 'package:homebound/helpers/colors.dart';
 import 'package:homebound/models/advertisment.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:http/http.dart' as http;
 
 class DetailOfHouse extends StatelessWidget {
   final Advertisment room;
   final List<Imagery> image;
 
   DetailOfHouse(this.room, this.image);
+  var _formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = new TextEditingController();
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController messageController = new TextEditingController();
+  bool sent = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +36,12 @@ class DetailOfHouse extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       if (image[index].advertismentId == room.id) {
                         return new Image.network(
-                         Strings.imageurl +  image[index].thumbnailimages,
-                          width:200,
-                          height:200,
+                          Strings.imageurl + image[index].thumbnailimages,
+                          width: 200,
+                          height: 200,
                           fit: BoxFit.cover,
                         );
-                      }else{
+                      } else {
                         return new Image.asset(
                           image[0].images,
                           fit: BoxFit.cover,
@@ -42,14 +50,14 @@ class DetailOfHouse extends StatelessWidget {
                     },
                     itemCount: image.length,
                     pagination: new SwiperPagination(),
-                    // control: new SwiperControl(),
+        
                   ),
                 ),
                 Positioned(
                   child: Container(
                     width: 50,
                     height: 50,
-                    // decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(25)), color: kBlueColor),
+             
 
                     child: IconButton(
                       icon: Icon(
@@ -80,7 +88,7 @@ class DetailOfHouse extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Flexible(
-                                                  child: Column(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
@@ -100,13 +108,12 @@ class DetailOfHouse extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.grey[500],
                                   ),
-                                  overflow: TextOverflow.visible
-                                  ),
+                                  overflow: TextOverflow.visible),
                               SizedBox(
                                 height: 16,
                               ),
                               Text(
-                              '\$'+ room.price + " /Monthly",
+                                '\$' + room.price + " /Monthly",
                                 style: TextStyle(
                                     fontSize: 22,
                                     color: kBlueColor,
@@ -117,9 +124,7 @@ class DetailOfHouse extends StatelessWidget {
                         ),
                         IconButton(
                           icon: Icon(Icons.navigation),
-                          onPressed: () {
-                            
-                          },
+                          onPressed: () {},
                         )
                       ],
                     ),
@@ -189,7 +194,7 @@ class DetailOfHouse extends StatelessWidget {
                   SizedBox(
                     height: 1,
                   ),
-             Container(
+                  Container(
                     margin: EdgeInsets.only(left: 32, right: 10, top: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -205,7 +210,7 @@ class DetailOfHouse extends StatelessWidget {
                               width: 4,
                             ),
                             Text(
-                             room.street,
+                              room.street,
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontWeight: FontWeight.w500),
@@ -215,7 +220,7 @@ class DetailOfHouse extends StatelessWidget {
                       ],
                     ),
                   ),
-                    Container(
+                  Container(
                     margin: EdgeInsets.only(left: 32, right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,7 +236,7 @@ class DetailOfHouse extends StatelessWidget {
                               width: 4,
                             ),
                             Text(
-                            "Apt# " +room.apartmentNumber,
+                              "Apt# " + room.apartmentNumber,
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontWeight: FontWeight.w500),
@@ -241,7 +246,7 @@ class DetailOfHouse extends StatelessWidget {
                       ],
                     ),
                   ),
-                   Container(
+                  Container(
                     margin: EdgeInsets.only(left: 32, right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,7 +262,7 @@ class DetailOfHouse extends StatelessWidget {
                               width: 4,
                             ),
                             Text(
-                             room.parish,
+                              room.parish,
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontWeight: FontWeight.w500),
@@ -267,7 +272,7 @@ class DetailOfHouse extends StatelessWidget {
                       ],
                     ),
                   ),
-                   Container(
+                  Container(
                     margin: EdgeInsets.only(left: 32, right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -283,7 +288,7 @@ class DetailOfHouse extends StatelessWidget {
                               width: 4,
                             ),
                             Text(
-                             room.phoneNumber,
+                              room.phoneNumber,
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontWeight: FontWeight.w500),
@@ -293,7 +298,7 @@ class DetailOfHouse extends StatelessWidget {
                       ],
                     ),
                   ),
-                   Container(
+                  Container(
                     margin: EdgeInsets.only(left: 32, right: 10, top: 1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,7 +314,7 @@ class DetailOfHouse extends StatelessWidget {
                               width: 4,
                             ),
                             Text(
-                             room.email,
+                              room.email,
                               style: TextStyle(
                                   color: Colors.grey[600],
                                   fontWeight: FontWeight.w500),
@@ -330,7 +335,7 @@ class DetailOfHouse extends StatelessWidget {
                         CircleAvatar(
                           child: ClipRRect(
                             child: Image.network(
-                              Strings.imageurl+ room.user.profilePhoto,
+                              Strings.imageurl + room.user.profilePhoto,
                               fit: BoxFit.contain,
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -344,7 +349,7 @@ class DetailOfHouse extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                               room.user.firstName +" "+ room.user.lastName,
+                                room.user.firstName + " " + room.user.lastName,
                                 style: TextStyle(
                                     color: Colors.grey[800],
                                     fontSize: 18,
@@ -367,22 +372,127 @@ class DetailOfHouse extends StatelessWidget {
                                 fontWeight: FontWeight.w400),
                           ),
                           onPressed: () {
-                          showDialog(
-                          context: context,builder: (_) => NetworkGiffyDialog(
-                          image:Image.network("https://raw.githubusercontent.com/Shashank02051997/FancyGifDialog-Android/master/GIF's/gif14.gif"),
-                          title: Text('Granny Eating Chocolate',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w600)),
-                          description:Text('This is a granny eating chocolate dialog box. This library helps you easily create fancy giffy dialog',
-                          textAlign: TextAlign.center,
-                          ),
-                          entryAnimation: EntryAnimation.BOTTOM_RIGHT,
-                          onOkButtonPressed: () {},
-                        ) );
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Contact Us',style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400),),
+                                    content: Stack(
+                                      overflow: Overflow.visible,
+                                      children: <Widget>[
+                                        Positioned(
+                                          right: -30.0,
+                                          top: -90.0,
+                                          child: InkResponse(
+                                            onTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: CircleAvatar(
+                                              child: Icon(Icons.close),
+                                              backgroundColor: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                        Form(
+                                          key: _formKey,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: TextFormField(
+                                                  controller: nameController,
+                                                  cursorColor: Colors.white,
+                                                  decoration: InputDecoration(
+                                                    icon:
+                                                        Icon(Icons.account_box),
+                                                    hintText: "Name",
+                                                    border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors
+                                                                .white70)),
+                                                    hintStyle: TextStyle(
+                                                        color: Colors.white70),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: TextFormField(
+                                                  controller: emailController,
+                                                  cursorColor: Colors.white,
+                                                  decoration: InputDecoration(
+                                                    icon: Icon(Icons.email),
+                                                    hintText: "Email",
+                                                    border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors
+                                                                .white70)),
+                                                    hintStyle: TextStyle(
+                                                        color: Colors.white70),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: 80.0,
+                                                  child: TextFormField(
+                                                    controller:
+                                                        messageController,
+                                                    cursorColor: Colors.white,
+                                                    decoration: InputDecoration(
+                                                      icon: Icon(Icons.message),
+                                                      hintText: "Message",
+                                                      border: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: Colors
+                                                                  .white70)),
+                                                      hintStyle: TextStyle(
+                                                          color:
+                                                              Colors.white70),
+                                                      // contentPadding: const EdgeInsets.symmetric(vertical: 40.0),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: RaisedButton(
+                                                  child: Text("Send"),
+                                                  onPressed: () {
+                                                    if (_formKey.currentState
+                                                        .validate()) {
+                                                      sendmessage(
+                                                          nameController.text,
+                                                          emailController.text,
+                                                          messageController.text,
+                                                          room.user.id.toString(),
+                                                          context);
+                                                        //   if (sent) {
+                                                        // onSent(context);
+                                                        // } else {
+                                                        //  notsent(context);
+                                                        // }
+                                                      _formKey.currentState
+                                                          .save();
+                                                    }
+                                                  },
+                                                  color: Colors.blue,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
                           },
-                          color: kBlueColor,
+                          color: Colors.blue,
                         )
                       ],
                     ),
@@ -411,11 +521,11 @@ class DetailOfHouse extends StatelessWidget {
                           children: <Widget>[
                             Flexible(
                               child: Column(
-                              children: <Widget>[
-                              SizedBox(
-                              width: 4,
-                              ),
-                              Text(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
                                     room.amenity,
                                     style: TextStyle(
                                         color: Colors.grey[600],
@@ -424,8 +534,6 @@ class DetailOfHouse extends StatelessWidget {
                                 ],
                               ),
                             ),
-              
-                            
                           ],
                         ),
                       ],
@@ -438,5 +546,60 @@ class DetailOfHouse extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  onSent(context) {
+     showDialog(
+        context: context,
+        builder: (_) => NetworkGiffyDialog(
+              image: Image.asset('assets/message_sent.gif'),
+              title: Text('Message Sent!',
+                textAlign: TextAlign.center,
+                style:
+                TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
+              description: Text(
+                "Your message was sent, and will be responded to in short order",
+                textAlign: TextAlign.center,
+              ),
+              entryAnimation: EntryAnimation.BOTTOM_RIGHT,
+              onlyOkButton: true,
+              buttonOkText: Text('Close'),
+              onOkButtonPressed: () {
+                
+              },
+            ));
+  }
+  
+  notsent(context) {
+    showDialog(
+        context: context,
+        builder: (_) => NetworkGiffyDialog(
+              image: Image.asset('assets/notsent.gif'),
+              title: Text('Oh No!',
+                  textAlign: TextAlign.center,
+                  style:
+                      TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
+              description: Text(
+                "Your message wasn't sent, please check your connections",
+                textAlign: TextAlign.center,
+              ),
+              entryAnimation: EntryAnimation.BOTTOM_RIGHT,
+              onlyOkButton: true,
+              buttonOkText: Text('Close'),
+              onOkButtonPressed: () {
+                
+              },
+            ));
+  }
+
+  sendmessage(String name, email, message, user,context) async {
+    Map data = {'name': email, 'email': email, 'message': message};
+    var response = await http.post(Strings.send + user, body: data);
+    print(Strings.send + user);
+    if (response.statusCode == 200) {
+          onSent(context);
+    } else {
+         notsent(context);
+    }
   }
 }

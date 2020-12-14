@@ -11,4 +11,12 @@ class Userdata{
      return  user;
      
   }
+  getAddCount() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var countJson = localStorage.getString('advert');
+    var advertcount = json.decode(countJson.toString());
+    
+     return  advertcount;
+     
+  }
 }
